@@ -2,6 +2,9 @@ import streamlit as st
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
 import numpy as np
+import gdown
+import os
+
 from PIL import Image
 
 # Load the trained model
@@ -62,3 +65,17 @@ if uploaded_files:
             st.image(uploaded_file, caption=f"Uploaded Image {i+1}")
             st.write("Prediction: Unknown")
             st.write("The predicted class index is out of range.")
+
+# Google Drive se model download karne ka function
+def download_model():
+    url = "https://drive.google.com/uc?id=YOUR_FILE_ID"  # Replace with actual file ID
+    output = "best_vgg16_model.keras"
+    if not os.path.exists(output):  # Agar file already exist nahi karti, toh download karo
+        gdown.download(url, output, quiet=False)
+
+# Download model
+download_model()
+
+# Load the model
+from tensorflow.keras.models import load_model
+model = load_model("best_vgg16_model.keras")

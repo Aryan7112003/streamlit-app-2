@@ -3,4 +3,4 @@ numpy
 scikit-learn
 tensorflow-cpu==2.10.0
 Pillow
-gdown
+requests

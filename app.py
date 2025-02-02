@@ -68,7 +68,7 @@ if uploaded_files:
 
 # Google Drive se model download karne ka function
 def download_model():
-    url = "https://drive.google.com/uc?id=YOUR_FILE_ID"  # Replace with actual file ID
+    url = "https://drive.google.com/uc?id=1wB0qSn_9CAsl7tdq0RDVi03VbQQfMqfj"  # Replace with actual file ID
     output = "best_vgg16_model.keras"
     if not os.path.exists(output):  # Agar file already exist nahi karti, toh download karo
         gdown.download(url, output, quiet=False)

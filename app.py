@@ -1,16 +1,31 @@
 import streamlit as st
+import numpy as np
+import os
+import gdown
+from PIL import Image
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
-import numpy as np
-import gdown
-import os
 
-from PIL import Image
+# 🔹 Step 1: Download Model from Google Drive (If Not Exists)
+MODEL_FILE = "best_vgg16_model.keras"
+GOOGLE_DRIVE_FILE_ID = "1wB0qSn_9CAsl7tdq0RDVi03VbQQfMqfj"  # ✅ Your Google Drive File ID
 
-# Load the trained model
-model = load_model("best_vgg16_model.keras")  # Update with your model path
+def download_model():
+    if not os.path.exists(MODEL_FILE):
+        url = f"https://drive.google.com/uc?id={GOOGLE_DRIVE_FILE_ID}"
+        st.info("Downloading model... Please wait.")
+        gdown.download(url, MODEL_FILE, quiet=False)
 
-# Define class names, descriptions, countries, ranks, advantages, and disadvantages
+download_model()
+
+# 🔹 Step 2: Load the Model
+try:
+    model = load_model(MODEL_FILE)
+    st.success("Model loaded successfully! ✅")
+except Exception as e:
+    st.error(f"Error loading model: {e}")
+
+# 🔹 Step 3: Class Information
 class_info = {
     "test": {
         "description": "This is a test class, typically used for validation.",
@@ -28,7 +43,7 @@ class_info = {
     }
 }
 
-# Streamlit app
+# 🔹 Step 4: Streamlit UI
 st.title("Image Classification with Advantages and Disadvantages")
 uploaded_files = st.file_uploader("Upload multiple images", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
 
@@ -65,17 +80,3 @@ if uploaded_files:
             st.image(uploaded_file, caption=f"Uploaded Image {i+1}")
             st.write("Prediction: Unknown")
             st.write("The predicted class index is out of range.")
-
-# Google Drive se model download karne ka function
-def download_model():
-    url = "https://drive.google.com/uc?id=1wB0qSn_9CAsl7tdq0RDVi03VbQQfMqfj"  # Replace with actual file ID
-    output = "best_vgg16_model.keras"
-    if not os.path.exists(output):  # Agar file already exist nahi karti, toh download karo
-        gdown.download(url, output, quiet=False)
-
-# Download model
-download_model()
-
-# Load the model
-from tensorflow.keras.models import load_model
-model = load_model("best_vgg16_model.keras")

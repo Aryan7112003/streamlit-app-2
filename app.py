@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import os
-import gdown
+import requests
 from PIL import Image
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
@@ -14,7 +14,9 @@ def download_model():
     if not os.path.exists(MODEL_FILE):
         url = f"https://drive.google.com/uc?id={GOOGLE_DRIVE_FILE_ID}"
         st.info("Downloading model... Please wait.")
-        gdown.download(url, MODEL_FILE, quiet=False)
+        response = requests.get(url)
+        with open(MODEL_FILE, "wb") as file:
+            file.write(response.content)
 
 download_model()
 
